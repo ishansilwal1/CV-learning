@@ -1,0 +1,191 @@
+OpenCV & Computer Vision Terms — Glossary (project-specific)
+Location: d:\CV practice\opencv_terms_glossary.txt
+
+Purpose
+This glossary lists the key OpenCV and general computer-vision terms used in your project (files up to and including `contours.py`). Each entry has a short plain-English definition, where it appears in your code, and a tiny usage tip or example.
+
+----
+1) Image / frame
+Definition: A 2D array of pixel values. Color images usually have 3 channels (BGR in OpenCV). Grayscale images have 1 channel.
+Where used: `basic.py`, `read.py`, `dotcode_detector_main.py` etc.
+Tip: In OpenCV, images are numpy arrays; shape is (height, width, channels).
+
+2) BGR vs RGB
+Definition: OpenCV reads color images as BGR (Blue-Green-Red) pixel order; many other libraries use RGB.
+Where used: `read.py`, `dotcode_visualizer.py` (colors passed to cv2 drawing functions assume BGR).
+Tip: Convert with `cv2.cvtColor(img, cv2.COLOR_BGR2RGB)` when using matplotlib.
+
+3) cv2.imread
+Definition: Loads an image from disk into a numpy array. Returns None if file not found.
+Where used: `basic.py`, `detector.py`, `dotcode_visualizer.py`.
+Tip: Always check if return is None.
+
+4) cv2.imshow / cv2.waitKey / cv2.destroyAllWindows
+Definition: Functions to display images in a window, wait for a key, and close windows.
+Where used: `basic.py`, `draw.py`, `read.py`.
+Tip: When writing scripts, use waitKey(0) to pause until a key is pressed.
+
+5) Grayscale / cvtColor
+Definition: Converting BGR image to single-channel brightness values (cv2.COLOR_BGR2GRAY).
+Where used: `basic.py`, `detector.py`.
+Tip: Many detection algorithms work on grayscale images.
+
+6) GaussianBlur / cv2.GaussianBlur
+Definition: Smooths image with a Gaussian kernel to reduce noise and detail.
+Where used: `basic.py`, `detector.py`.
+Tip: Kernel size must be odd. Third parameter is sigmaX (use 0 to let OpenCV compute).
+
+7) Median blur / cv2.medianBlur
+Definition: Filters image using median of neighborhood; good for removing salt-and-pepper noise.
+Where used: `detector.py`.
+Tip: Kernel size should be odd and >= 3.
+
+8) CLAHE (Contrast Limited Adaptive Histogram Equalization)
+Definition: Enhances local contrast, useful when illumination varies.
+Where used: `detector.py` (cv2.createCLAHE).
+Tip: Good for pre-processing images before detection under variable lighting.
+
+9) Canny edge detection / cv2.Canny
+Definition: Multi-stage edge detector producing thin edges.
+Where used: `contours.py`, `basic.py`.
+Tip: Requires two thresholds; smoothing before Canny improves results.
+
+10) Contours / cv2.findContours
+Definition: Contours are curves that join continuous points along boundaries with the same intensity. findContours extracts these boundaries from a binary/edge image.
+Where used: `contours.py`.
+Tip: Useful for counting objects and measuring area/perimeter.
+
+11) cv.RETR_LIST / cv.RETR_EXTERNAL
+Definition: Retrieval modes for findContours; RETR_LIST retrieves all contours; RETR_EXTERNAL retrieves only outer contours.
+Where used: `contours.py`.
+Tip: Use RETR_TREE for full hierarchy when you need parent-child relationships.
+
+12) cv.CHAIN_APPROX_NONE / cv.CHAIN_APPROX_SIMPLE
+Definition: Chain approximation methods for contours; NONE stores all points, SIMPLE compresses horizontal/vertical/diagonal segments.
+Where used: `contours.py`.
+Tip: Use SIMPLE to reduce memory for large contours.
+
+13) cv.drawContours
+Definition: Draws contours on an image.
+Where used: recommended for visualization (not in `contours.py` yet).
+Tip: Use thickness -1 to fill a contour.
+
+14) Bounding box / cv2.boundingRect
+Definition: Smallest upright rectangle that contains a contour.
+Where used: suggested in exercises; typical after findContours.
+Tip: Useful for cropping or measuring object size.
+
+15) cv2.contourArea / cv2.arcLength
+Definition: Functions to compute area and perimeter (arc length) of a contour.
+Where used: suggested in `cv_interview_qna.txt` and exercises.
+Tip: Use area filter to ignore tiny noisy contours.
+
+16) Moments / cv2.moments
+Definition: Spatial moments of contours; used to compute centroid and other shape descriptors.
+Where used: suggested in exercises for labeling contours.
+Tip: Centroid = (m10/m00, m01/m00) when m00 != 0.
+
+17) Resize / cv2.resize
+Definition: Change image dimensions; interpolation options control quality.
+Where used: `basic.py`, `draw.py`, `read.py`, `rescale.py`.
+Tip: For shrinking images use INTER_AREA, for enlarging use INTER_LINEAR or INTER_CUBIC.
+
+18) Cropping (numpy slicing)
+Definition: Selecting a subset of the image array using indexing, e.g., img[y1:y2, x1:x2].
+Where used: `basic.py`.
+Tip: Remember indexing is [rows, cols] = [y, x].
+
+19) Video / cv2.VideoCapture
+Definition: Reads frames from a video file or camera.
+Where used: `read.py`, `rescale.py`.
+Tip: Always check the return flag when reading frames.
+
+20) Dilation / Erosion / cv2.dilate / cv2.erode
+Definition: Morphological operations that expand (dilate) or shrink (erode) white regions in binary images.
+Where used: `basic.py`.
+Tip: Use opening/closing (erode->dilate or dilate->erode) to remove noise or fill holes.
+
+21) Drawing primitives: rectangle/circle/line/putText
+Definition: Functions to draw shapes and text on images (cv2.rectangle, cv2.circle, cv2.line, cv2.putText).
+Where used: `draw.py`, `dotcode_visualizer.py`.
+Tip: Colors are BGR; thickness -1 fills shapes.
+
+22) HoughCircles / Hough transforms
+Definition: Hough transform-based methods to detect shapes parameterized by geometry (e.g., circles or lines).
+Where used: `detector.py` (cv2.HoughCircles).
+Tip: HoughCircles is sensitive to param1/param2 thresholds and requires edge evidence.
+
+23) blob_log (skimage.feature.blob_log)
+Definition: Laplacian of Gaussian-based blob detector that works across scales and returns (y, x, sigma) per blob.
+Where used: `detector.py`.
+Tip: Convert sigma -> radius using radius = sqrt(2) * sigma; normalize image before thresholding.
+
+24) DBSCAN / clustering (concept)
+Definition: Clustering method useful to group nearby detection points and merge duplicates.
+Where used: `detector.py` uses cdist-based clustering; DBSCAN is a faster alternative for large sets.
+Tip: Use eps ~ merge_threshold and min_samples=1 for merging near duplicates.
+
+25) numpy arrays & indexing
+Definition: Images and geometric arrays are numpy arrays; common operations include reshape, slicing, and vectorized math.
+Where used: throughout the repo.
+Tip: Use vectorized numpy operations for speed instead of Python loops.
+
+26) Matplotlib (plt) for visualization
+Definition: Plotting library used sometimes for debugging/plots. Must convert BGR->RGB before showing images.
+Where used: `detector.py` imports matplotlib.pyplot as plt.
+Tip: Use plt.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB)).
+
+27) skimage.measure.regionprops / label
+Definition: Functions to label connected components and measure properties like area, centroid.
+Where used: `detector.py` imports regionprops and label (not heavily used in current code).
+Tip: Useful for analyzing connected components after thresholding.
+
+28) JSON encoder / numpy types
+Definition: Custom JSON encoder to serialize numpy types (int64/float64/ndarray) to Python built-ins for JSON output.
+Where used: `detector.py` JSONEncoder class.
+Tip: Use json.dumps(obj, cls=JSONEncoder) to serialize DetectionResult-like objects.
+
+29) Affine transforms / cv2.warpAffine / getRotationMatrix2D
+Definition: Transformations like translation and rotation applied using 2x3 affine matrices.
+Where used: `transformation.py`.
+Tip: The rotation center is (width//2, height//2) by default; warpAffine applies the matrix to the image.
+
+30) waitKey & keyboard events
+Definition: cv2.waitKey returns a key code; used to exit loops during video playback.
+Where used: `read.py`, `draw.py`.
+Tip: Use `if cv2.waitKey(20) & 0xFF == ord('d'):` to break loop on key press 'd'.
+
+----
+
+Quick usage examples (short snippets)
+
+- Check image load and convert to gray:
+```
+img = cv2.imread('image.jpg')
+if img is None:
+    raise FileNotFoundError('image not found')
+gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+```
+
+- Find and draw contours (from contours.py):
+```
+edges = cv2.Canny(img, 125, 175)
+contours, hierarchy = cv2.findContours(edges, cv2.RETR_LIST, cv2.CHAIN_APPROX_NONE)
+cv2.drawContours(img, contours, -1, (0,255,0), 2)
+```
+
+- Blob detection (LoG) and convert radius:
+```
+blobs = blob_log(preprocessed_image, min_sigma=1, max_sigma=30, num_sigma=10, threshold=0.1)
+if blobs is not None and len(blobs) > 0:
+    blobs[:, 2] = blobs[:, 2] * np.sqrt(2)
+    for y,x,r in blobs:
+        cv2.circle(img, (int(x), int(y)), int(round(r)), (0,255,0), 2)
+```
+
+----
+Notes & next steps
+- If you'd like, I can add the glossary as a README file in the repository and commit changes, or create a one-page printable cheat-sheet with the most-used commands.
+- I can also annotate each file with inline explanations using comments for beginners.
+
+End of glossary.
