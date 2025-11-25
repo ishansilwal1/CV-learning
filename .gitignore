@@ -7,3 +7,16 @@ __pycache__/
 *.mp4   
 *.log
 *.sqlite3
+*.zip
+*.prototxt
+*.caffemodel
+*.model
+*.avi
+*.mov
+*.mkv
+*.h5
+*.pb
+*.onnx
+*.weights
+*.cfg
+*.tmp
