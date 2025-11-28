@@ -4,10 +4,6 @@ img = cv.imread('image2.jpg')
 
 
 # cv.imshow('dots',img)
-
-
-
-
 # converting to grayscale does what ?
 
 gray = cv.cvtColor(img,cv.COLOR_BGR2GRAY)
