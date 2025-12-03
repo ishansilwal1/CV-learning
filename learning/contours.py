@@ -121,7 +121,7 @@ thresh = cv2.adaptiveThreshold(
 
 #Func to find contours
 contours, _ = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-detected_contours = img.copy()
+detected_contours = img.copy() 
 cv2.drawContours(detected_contours, contours, -1, (0, 255, 0), -1)
 plt.imshow(detected_contours)
 plt.title('Detected contours')
