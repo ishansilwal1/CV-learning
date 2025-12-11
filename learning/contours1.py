@@ -59,3 +59,42 @@ print(check('../images/spiderman.jpg'))
 
 
 cv.waitKey(0)
+
+
+def get_parallel_line(self,line: tuple[float, float, float], offset: float) -> tuple[float, float, float]:
+        """
+        Author: Pranav Subedi
+        Function: get_parallel_line (Normalized)
+        Description:
+            Given a normalized line in standard form:
+            this function returns another normalized line that is
+            offset by 'px' pixels downward (in the positive Y direction).
+
+            Since the line is normalized, the offset simply shifts C by 'px':
+                C' = C + px
+
+            This ensures the output line remains normalized, i.e.,
+            sqrt(A² + B²) = 1, and the parallel distance between
+            the two lines equals exactly 'px' pixels.
+        Inputs:
+            line_coeffs (tuple[float, float, float]): Coefficients (A, B, C) of a normalized line such that sqrt(A² + B²) = 1.
+            px (float): Offset distance in pixels.
+                Positive = downward (in image coordinates).
+                Negative = upward.
+        Output:
+            new_line (tuple[float, float, float]): Coefficients (A, B, C') of the new normalized parallel line.
+        """
+        A, B, C = map(float, line)
+
+        # --- Verify normalization ---
+        norm = np.hypot(A, B)
+        if not np.isclose(norm, 1.0, atol=1e-6):
+            raise ValueError(
+                f"Line must be normalized (√(A²+B²)=1), but got {norm:.6f}. "
+                "Normalize it first using to_standard_line(..., normalize=True)."
+            )
+
+         # --- Offset line ---
+        C_new = C + offset
+        new_line=(A, B, C_new)
+        return new_line

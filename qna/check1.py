@@ -41,7 +41,5 @@ for index in a:
     cv.imshow("check",temp_img)
     cv.waitKey(1000)
 
-plt.imshow(img)
-
 cv.waitKey(0)
 cv.destroyAllWindows()
