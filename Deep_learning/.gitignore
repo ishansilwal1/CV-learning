@@ -31,3 +31,5 @@ __pycache__/
 /dataset/Train/images
 /dataset/
 /datasets/
+/runs/
+*.pt
